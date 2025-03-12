@@ -1,0 +1,13 @@
+name: CelestIslesSkyblock
+version: '0.1-SNAPSHOT'
+main: dev.bopke.celestIslesSkyblock.CelestIslesSkyblockPlugin
+api-version: '1.21'
+prefix: CelestIslesSkyblock
+load: STARTUP
+authors: [ Michał "Bopke" Kubik ]
+description: Skyblock plugin
+dependencies:
+  server:
+    WorldEdit:
+      load: BEFORE
+      required: true

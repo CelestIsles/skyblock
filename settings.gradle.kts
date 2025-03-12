@@ -1,0 +1,2 @@
+rootProject.name = "CelestIsles-skyblock"
+
