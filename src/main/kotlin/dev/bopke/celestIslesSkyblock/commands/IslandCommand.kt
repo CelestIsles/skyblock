@@ -1,6 +1,8 @@
 package dev.bopke.celestIslesSkyblock.commands
 
+import dev.bopke.celestIslesSkyblock.config.PluginConfig
 import dev.bopke.celestIslesSkyblock.islands.IslandRepository
+import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.worlds.WorldFactory
 import dev.rollczi.litecommands.annotations.command.Command
 import dev.rollczi.litecommands.annotations.context.Context
@@ -8,10 +10,14 @@ import dev.rollczi.litecommands.annotations.execute.Execute
 import org.bukkit.entity.Player
 
 @Command(name = "island", aliases = ["wyspa", "is"])
-class IslandCommand {
+class IslandCommand(
+    private val worldFactory: WorldFactory,
+    private val noticeService: NoticeService,
+    private val pluginConfig: PluginConfig
+) {
 
     @Execute(name = "home", aliases = ["dom"])
-    fun executeHome(@Context player: Player) {
+    fun home(@Context player: Player) {
         val island = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
         if (island == null) {
             player.sendMessage("No island :(")
@@ -22,19 +28,31 @@ class IslandCommand {
     }
 
     @Execute(name = "new", aliases = ["nowa"])
-    fun executeNew(@Context player: Player) {
+    fun createIsland(@Context player: Player) {
         val existingIsland = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
+
         if (existingIsland != null) {
-            player.sendMessage("You already have an island.")
+            this.noticeService.create()
+                .notice { messages -> messages.islandMessagesSubConfig.alreadyHaveIsland }
+                .player(player.uniqueId)
+                .send();
             return
         }
-        val island = IslandRepository.getInstance()
-            .create(player.uniqueId.toString(), WorldFactory().create(player.uniqueId.toString()))
+
+        val island = IslandRepository.getInstance().create(
+            player.uniqueId.toString(),
+            this.worldFactory.create(this.pluginConfig.skyblockWorldNamePrefix + player.uniqueId.toString())
+        )
+
         player.teleport(island.world.spawnLocation)
+        this.noticeService.create()
+            .notice { messages -> messages.islandMessagesSubConfig.createdIsland }
+            .player(player.uniqueId)
+            .send();
     }
 
     @Execute(name = "sethome", aliases = ["ustawdom"])
-    fun executeSethome(@Context player: Player) {
+    fun setHome(@Context player: Player) {
         val island = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
         if (island == null || player.world.name != island.uuid) {
             player.sendMessage("It's not your island!")
