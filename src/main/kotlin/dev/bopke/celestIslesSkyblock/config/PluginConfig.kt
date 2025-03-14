@@ -8,7 +8,7 @@ import eu.okaeri.configs.annotation.Header
 class PluginConfig : OkaeriConfig() {
 
     @Comment("The name of the world where the skyblock islands are located")
-    var skyblockWorldName: String = "skyblock"
+    var skyblockWorldNamePrefix: String = "skyblock_"
 
     @Comment("# Schematic name for the island")
     var schematicName: String = "default.schem";

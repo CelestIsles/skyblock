@@ -52,7 +52,7 @@ class CelestIslesSkyblockPlugin : JavaPlugin() {
 
         this.liteCommands = LiteBukkitFactory.builder("skyblock", this)
             .commands(
-                IslandCommand(this.worldFactory, this.noticeService)
+                IslandCommand(this.worldFactory, this.noticeService, this.pluginConfig)
             )
             .result(Notice::class.java, NoticeHandler(this.noticeService))
             .build()

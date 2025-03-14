@@ -1,5 +1,6 @@
 package dev.bopke.celestIslesSkyblock.commands
 
+import dev.bopke.celestIslesSkyblock.config.PluginConfig
 import dev.bopke.celestIslesSkyblock.islands.IslandRepository
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.worlds.WorldFactory
@@ -11,7 +12,8 @@ import org.bukkit.entity.Player
 @Command(name = "island", aliases = ["wyspa", "is"])
 class IslandCommand(
     private val worldFactory: WorldFactory,
-    private val noticeService: NoticeService
+    private val noticeService: NoticeService,
+    private val pluginConfig: PluginConfig
 ) {
 
     @Execute(name = "home", aliases = ["dom"])
@@ -39,7 +41,7 @@ class IslandCommand(
 
         val island = IslandRepository.getInstance().create(
             player.uniqueId.toString(),
-            this.worldFactory.create(player.uniqueId.toString())
+            this.worldFactory.create(this.pluginConfig.skyblockWorldNamePrefix + player.uniqueId.toString())
         )
 
         player.teleport(island.world.spawnLocation)
