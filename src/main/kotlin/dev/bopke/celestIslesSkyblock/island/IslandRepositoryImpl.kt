@@ -36,7 +36,7 @@ class IslandRepositoryImpl(
                 .execute()
         }
     }
-    
+
     override fun getByCreatorUuid(creatorUuid: UUID): CompletableFuture<Optional<Island>> {
         return CompletableFuture.supplyAsync {
             Optional.ofNullable(
