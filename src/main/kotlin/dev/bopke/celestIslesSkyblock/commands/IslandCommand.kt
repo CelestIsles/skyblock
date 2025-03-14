@@ -1,9 +1,11 @@
 package dev.bopke.celestIslesSkyblock.commands
 
 import dev.bopke.celestIslesSkyblock.config.PluginConfig
-import dev.bopke.celestIslesSkyblock.islands.IslandRepository
+import dev.bopke.celestIslesSkyblock.island.IslandRepository
+import dev.bopke.celestIslesSkyblock.island.UnidentifiedIsland
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.worlds.WorldFactory
+import dev.rollczi.litecommands.annotations.argument.Arg
 import dev.rollczi.litecommands.annotations.command.Command
 import dev.rollczi.litecommands.annotations.context.Context
 import dev.rollczi.litecommands.annotations.execute.Execute
@@ -13,52 +15,25 @@ import org.bukkit.entity.Player
 class IslandCommand(
     private val worldFactory: WorldFactory,
     private val noticeService: NoticeService,
-    private val pluginConfig: PluginConfig
+    private val pluginConfig: PluginConfig,
+    private val islandRepository: IslandRepository
 ) {
 
-    @Execute(name = "home", aliases = ["dom"])
-    fun home(@Context player: Player) {
-        val island = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
-        if (island == null) {
-            player.sendMessage("No island :(")
-            return
+    @Execute(name = "create")
+    fun create(@Context player: Player, @Arg("island-name") islandName: String) {
+        val world = this.worldFactory.create(this.pluginConfig.skyblockWorldNamePrefix + player.uniqueId)
+        val island: UnidentifiedIsland = this.islandRepository.create(player.uniqueId, world, islandName)
+
+        this.islandRepository.insert(island).whenComplete { definedIsland, error ->
+            if (error != null) {
+                println(error.message)
+                error.printStackTrace()
+                return@whenComplete
+            }
+
+            player.sendMessage("Wyspa została stworzona!")
+            player.sendMessage("Id wyspy: ${definedIsland.id}")
         }
-        val world = island.world
-        player.teleport(world.spawnLocation)
     }
 
-    @Execute(name = "new", aliases = ["nowa"])
-    fun createIsland(@Context player: Player) {
-        val existingIsland = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
-
-        if (existingIsland != null) {
-            this.noticeService.create()
-                .notice { messages -> messages.islandMessagesSubConfig.alreadyHaveIsland }
-                .player(player.uniqueId)
-                .send();
-            return
-        }
-
-        val island = IslandRepository.getInstance().create(
-            player.uniqueId.toString(),
-            this.worldFactory.create(this.pluginConfig.skyblockWorldNamePrefix + player.uniqueId.toString())
-        )
-
-        player.teleport(island.world.spawnLocation)
-        this.noticeService.create()
-            .notice { messages -> messages.islandMessagesSubConfig.createdIsland }
-            .player(player.uniqueId)
-            .send();
-    }
-
-    @Execute(name = "sethome", aliases = ["ustawdom"])
-    fun setHome(@Context player: Player) {
-        val island = IslandRepository.getInstance().getForUUID(player.uniqueId.toString())
-        if (island == null || player.world.name != island.uuid) {
-            player.sendMessage("It's not your island!")
-            return
-        }
-        island.world.spawnLocation = player.location
-        player.sendMessage("Spawn set.")
-    }
 }
