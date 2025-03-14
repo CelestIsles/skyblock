@@ -25,4 +25,7 @@ class PluginConfig : OkaeriConfig() {
     @Comment("Database password")
     var databasePassword: String = "postgres";
 
+    @Comment("Default island name")
+    var defaultIslandName: String = "{player}'s island"
+
 }

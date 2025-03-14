@@ -1,13 +1,14 @@
 package dev.bopke.celestIslesSkyblock
 
 import com.eternalcode.multification.notice.Notice
-import dev.bopke.celestIslesSkyblock.commands.IslandCommand
+import dev.bopke.celestIslesSkyblock.island.commands.IslandCreateCommand
 import dev.bopke.celestIslesSkyblock.config.ConfigManager
 import dev.bopke.celestIslesSkyblock.config.MessageConfig
 import dev.bopke.celestIslesSkyblock.config.PluginConfig
 import dev.bopke.celestIslesSkyblock.database.DatabaseManager
 import dev.bopke.celestIslesSkyblock.island.IslandRepository
 import dev.bopke.celestIslesSkyblock.island.IslandRepositoryImpl
+import dev.bopke.celestIslesSkyblock.island.commands.IslandSetNameCommand
 import dev.bopke.celestIslesSkyblock.notice.NoticeHandler
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.notice.adventure.LegacyColorProcessor
@@ -68,7 +69,8 @@ class CelestIslesSkyblockPlugin : JavaPlugin() {
 
         this.liteCommands = LiteBukkitFactory.builder("skyblock", this)
             .commands(
-                IslandCommand(this.worldFactory, this.noticeService, this.pluginConfig, this.islandRepository)
+                IslandCreateCommand(this.worldFactory, this.noticeService, this.pluginConfig, this.islandRepository),
+                IslandSetNameCommand(this.noticeService, this.islandRepository)
             )
             .result(Notice::class.java, NoticeHandler(this.noticeService))
             .build()
