@@ -1,5 +1,6 @@
 package dev.bopke.celestIslesSkyblock.island.commands
 
+import com.dzikoysk.sqiffy.dsl.eq
 import dev.bopke.celestIslesSkyblock.island.IslandRepository
 import dev.bopke.celestIslesSkyblock.island.IslandTable
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
@@ -20,7 +21,11 @@ class IslandSetNameCommand(
     @Execute(name = "setname")
     @Cooldown(key = "island-setname", count = 5L, unit = ChronoUnit.SECONDS)
     fun setName(@Context player: Player, @Arg("island-name") name: String) {
-        this.islandRepository.update(player.uniqueId, IslandTable.name, name).thenAccept {
+        this.islandRepository.update(
+            IslandTable.creator_uuid eq player.uniqueId,
+            IslandTable.name,
+            name
+        ).thenAccept {
             this.noticeService.create()
                 .notice { messages -> messages.islandMessagesSubConfig.changedIslandName }
                 .player(player.uniqueId)

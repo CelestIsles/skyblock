@@ -2,6 +2,7 @@ package dev.bopke.celestIslesSkyblock.island
 
 import com.dzikoysk.sqiffy.SqiffyDatabase
 import com.dzikoysk.sqiffy.dsl.Column
+import com.dzikoysk.sqiffy.dsl.Expression
 import com.dzikoysk.sqiffy.dsl.eq
 import org.bukkit.World
 import java.util.*
@@ -19,7 +20,7 @@ class IslandRepositoryImpl(
         )
     }
 
-    override fun insert(island: UnidentifiedIsland): CompletableFuture<Island> {
+    override fun save(island: UnidentifiedIsland): CompletableFuture<Island> {
         return CompletableFuture.supplyAsync {
             this.database.insert(IslandTable) {
                 it[IslandTable.creator_uuid] = island.creator_uuid
@@ -29,10 +30,26 @@ class IslandRepositoryImpl(
         }
     }
 
-    override fun <T> update(creatorUuid: UUID, column: Column<T>, value: T): CompletableFuture<Int> {
+    override fun save(island: Island): CompletableFuture<Int> {
+        return CompletableFuture.supplyAsync {
+            this.database.update(IslandTable) {
+                it[IslandTable.creator_uuid] = island.creator_uuid
+                it[IslandTable.world] = island.world
+                it[IslandTable.name] = island.name
+            }
+                .where { IslandTable.id eq island.id }
+                .execute()
+        }
+    }
+
+    override fun <T> update(
+        expression: Expression<out Column<*>, Boolean>,
+        column: Column<T>,
+        value: T
+    ): CompletableFuture<Int> {
         return CompletableFuture.supplyAsync {
             this.database.update(IslandTable) { update -> update[column] = value }
-                .where { IslandTable.creator_uuid eq creatorUuid }
+                .where { expression }
                 .execute()
         }
     }

@@ -33,13 +33,13 @@ class IslandCreateCommand(
                         .player(player.uniqueId)
                         .send()
                 },
-                { this.insert(island, player, name) }
+                { this.insert(island, player) }
             )
         }
     }
 
-    private fun insert(island: UnidentifiedIsland, player: Player, name: String) {
-        this.islandRepository.insert(island).whenComplete { _, error ->
+    private fun insert(island: UnidentifiedIsland, player: Player) {
+        this.islandRepository.save(island).whenComplete { _, error ->
             if (error != null) {
                 println(error.message)
                 error.printStackTrace()
@@ -49,7 +49,7 @@ class IslandCreateCommand(
             this.noticeService.create()
                 .notice { messages -> messages.islandMessagesSubConfig.createdIsland }
                 .player(player.uniqueId)
-                .placeholder("{name}", name)
+                .placeholder("{name}", island.name)
                 .placeholder("{player}", player.name)
                 .send()
         }
