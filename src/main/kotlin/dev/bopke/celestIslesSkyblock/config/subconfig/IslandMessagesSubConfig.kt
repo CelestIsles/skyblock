@@ -8,10 +8,10 @@ import eu.okaeri.configs.annotation.Header
 @Header("## CelestIsles (Island-Messages-Section) ##")
 class IslandMessagesSubConfig : OkaeriConfig() {
 
-    // Schemat wiadomosci:
-    //  "<color:#22DD22>✔</color> <color:#00FF7F>tresc <color:#FFFF55>{name}</color>!</color>" wiadomosc pomyslna (kolorki)
-    //  "<color:#FF2222>❌</color> <color:#FF4444>tresc <color:#FFAA00>{player}</color>!</color>" wiadomosc bledu (kolorki)
-    //  "<color:#2299FF>ℹ</color> <color:#00AAFF>tresc. <color:##FFD700>{player}</color>.</color>" wiadomosc informacyjna (kolorki)
+    // Message schema:
+    //  "<color:#22DD22>✔</color> <color:#00FF7F>content <color:#FFFF55>{name}</color>!</color>"  success message (colors)
+    //  "<color:#FF2222>❌</color> <color:#FF4444>content <color:#FFAA00>{player}</color>!</color>" error message (colors)
+    //  "<color:#2299FF>ℹ</color> <color:#00AAFF>content <color:##FFD700>{player}</color>.</color>" info message (colors)
 
     var alreadyHaveIsland: Notice = BukkitNotice.builder()
         .chat("<color:#FF2222>❌</color> <color:#FF4444>You already have island!</color>")
