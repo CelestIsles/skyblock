@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.0"
+    id("com.google.devtools.ksp") version "2.1.0-1.0.29"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
@@ -36,6 +37,16 @@ dependencies {
     implementation("eu.okaeri:okaeri-configs-yaml-bukkit:5.0.6")
     implementation("eu.okaeri:okaeri-configs-serdes-bukkit:5.0.6")
     implementation("eu.okaeri:okaeri-configs-serdes-commons:5.0.6")
+
+    // -- tasker --
+    implementation("eu.okaeri:okaeri-tasker-bukkit:3.0.2-beta.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+
+    // -- database --
+    val sqiffy = "1.0.0-alpha.68"
+    ksp("com.dzikoysk.sqiffy:sqiffy-symbol-processor:$sqiffy")
+    implementation("com.dzikoysk.sqiffy:sqiffy:$sqiffy")
+    implementation("org.postgresql:postgresql:42.5.0")
 }
 
 val targetJavaVersion = 21
