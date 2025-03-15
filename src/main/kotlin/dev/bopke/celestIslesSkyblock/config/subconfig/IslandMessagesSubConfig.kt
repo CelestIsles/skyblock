@@ -20,7 +20,7 @@ class IslandMessagesSubConfig : OkaeriConfig() {
     var createdIsland: Notice = BukkitNotice.builder()
         .chat(
             "<color:#22DD22>✔</color> <color:#00FF7F>Successfully created island with name <color:#FFFF55>{name}</color>!</color>",
-            "  <color:#00FF7F>If you want to change default name, use this command <color:#FFFF55>/island setname <nazwa></color></color>",
+            "  <color:#00FF7F>If you want to change default name, use this command <color:#FFFF55>/island setname <name></color></color>",
             "  <color:#00FF7F>If you want to see all command, use this command <color:#FFFF55>/island</color></color>",
         )
         .build()
