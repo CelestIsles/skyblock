@@ -12,7 +12,7 @@ interface IslandRepository {
 
     fun save(island: UnidentifiedIsland): CompletableFuture<Island>
 
-    fun save(island: Island): CompletableFuture<Int>
+    fun save(island: Island, creatorUuid: UUID, world: String, name: String): CompletableFuture<Int>
 
     fun <T> update(expression: Expression<out Column<*>, Boolean>, column: Column<T>, value: T): CompletableFuture<Int>
 

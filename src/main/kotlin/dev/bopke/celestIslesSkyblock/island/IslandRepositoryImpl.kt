@@ -30,12 +30,12 @@ class IslandRepositoryImpl(
         }
     }
 
-    override fun save(island: Island): CompletableFuture<Int> {
+    override fun save(island: Island, creatorUuid: UUID, world: String, name: String): CompletableFuture<Int> {
         return CompletableFuture.supplyAsync {
             this.database.update(IslandTable) {
-                it[IslandTable.creator_uuid] = island.creator_uuid
-                it[IslandTable.world] = island.world
-                it[IslandTable.name] = island.name
+                it[IslandTable.creator_uuid] = creatorUuid
+                it[IslandTable.world] = world
+                it[IslandTable.name] = name
             }
                 .where { IslandTable.id eq island.id }
                 .execute()
@@ -64,4 +64,5 @@ class IslandRepositoryImpl(
             )
         }
     }
+
 }
