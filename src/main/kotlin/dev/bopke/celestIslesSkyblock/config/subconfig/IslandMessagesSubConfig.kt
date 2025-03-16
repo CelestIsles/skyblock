@@ -13,6 +13,10 @@ class IslandMessagesSubConfig : OkaeriConfig() {
     //  "<color:#FF2222>❌</color> <color:#FF4444>content <color:#FFAA00>{player}</color>!</color>" error message (colors)
     //  "<color:#2299FF>ℹ</color> <color:#00AAFF>content <color:##FFD700>{player}</color>.</color>" info message (colors)
 
+    var dontHaveIsland: Notice = BukkitNotice.builder()
+        .chat("<color:#FF2222>❌</color> <color:#FF4444>You don't have island!</color>")
+        .build()
+
     var alreadyHaveIsland: Notice = BukkitNotice.builder()
         .chat("<color:#FF2222>❌</color> <color:#FF4444>You already have island!</color>")
         .build()
@@ -27,6 +31,22 @@ class IslandMessagesSubConfig : OkaeriConfig() {
 
     var changedIslandName: Notice = Notice.chat(
         "<color:#22DD22>✔</color> <color:#00FF7F>Successfully changed island name to <color:#FFFF55>{name}</color>!</color>"
+    )
+
+    var cannotShareWithYourself: Notice = Notice.chat(
+        "<color:#FF2222>❌</color> <color:#FF4444>You cannot share island with yourself!</color>"
+    )
+
+    var islandIsAlreadySharedWithPlayer: Notice = Notice.chat(
+        "<color:#FF2222>❌</color> <color:#FF4444>Island is already shared with player <color:#FFAA00>{player}</color>!</color>"
+    )
+
+    var shareIsland: Notice = Notice.chat(
+        "<color:#22DD22>✔</color> <color:#00FF7F>Successfully shared island with <color:#FFFF55>{player}</color>!</color>"
+    )
+
+    var playerSharedIslandWithYou: Notice = Notice.chat(
+        "<color:#22DD22>✔</color> <color:#00FF7F>Player <color:#FFFF55>{player}</color>, has shared island with you!</color>"
     )
 
 }

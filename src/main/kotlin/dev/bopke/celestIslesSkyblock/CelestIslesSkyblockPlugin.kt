@@ -9,6 +9,9 @@ import dev.bopke.celestIslesSkyblock.database.DatabaseManager
 import dev.bopke.celestIslesSkyblock.island.IslandRepository
 import dev.bopke.celestIslesSkyblock.island.IslandRepositoryImpl
 import dev.bopke.celestIslesSkyblock.island.commands.IslandSetNameCommand
+import dev.bopke.celestIslesSkyblock.island.share.IslandShareCommand
+import dev.bopke.celestIslesSkyblock.island.share.IslandShareRepository
+import dev.bopke.celestIslesSkyblock.island.share.IslandShareRepositoryImpl
 import dev.bopke.celestIslesSkyblock.notice.NoticeHandler
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.notice.adventure.LegacyColorProcessor
@@ -40,6 +43,7 @@ class CelestIslesSkyblockPlugin : JavaPlugin() {
     private lateinit var databaseManager: DatabaseManager
 
     private lateinit var islandRepository: IslandRepository
+    private lateinit var islandShareRepository: IslandShareRepository
 
     private lateinit var worldFactory: WorldFactory
 
@@ -64,13 +68,15 @@ class CelestIslesSkyblockPlugin : JavaPlugin() {
         this.databaseManager.connect()
 
         this.islandRepository = IslandRepositoryImpl(this.databaseManager.getDatabase())
+        this.islandShareRepository = IslandShareRepositoryImpl(this.databaseManager.getDatabase())
 
         this.worldFactory = WorldFactory(this.pluginConfig)
 
         this.liteCommands = LiteBukkitFactory.builder("skyblock", this)
             .commands(
                 IslandCreateCommand(this.worldFactory, this.noticeService, this.pluginConfig, this.islandRepository),
-                IslandSetNameCommand(this.noticeService, this.islandRepository)
+                IslandSetNameCommand(this.noticeService, this.islandRepository),
+                IslandShareCommand(this.noticeService, this.islandRepository, this.islandShareRepository)
             )
             .result(Notice::class.java, NoticeHandler(this.noticeService))
             .build()
