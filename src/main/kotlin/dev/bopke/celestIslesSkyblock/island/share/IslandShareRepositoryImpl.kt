@@ -3,6 +3,9 @@ package dev.bopke.celestIslesSkyblock.island.share
 import com.dzikoysk.sqiffy.SqiffyDatabase
 import com.dzikoysk.sqiffy.dsl.and
 import com.dzikoysk.sqiffy.dsl.eq
+import org.bukkit.entity.Player
+import java.time.Instant
+import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
@@ -10,10 +13,12 @@ class IslandShareRepositoryImpl(
     private val database: SqiffyDatabase
 ) : IslandShareRepository {
 
-    override fun create(islandId: Int, playerUUID: UUID): UnidentifiedIslandShare {
+    override fun create(islandId: Int, player: Player): UnidentifiedIslandShare {
         return UnidentifiedIslandShare(
             island_id = islandId,
-            player_uuid = playerUUID
+            player_uuid = player.uniqueId,
+            player_name = player.name,
+            shared_since = LocalDateTime.now()
         )
     }
 
@@ -22,6 +27,8 @@ class IslandShareRepositoryImpl(
             this.database.insert(IslandShareTable) {
                 it[IslandShareTable.island_id] = islandShare.island_id
                 it[IslandShareTable.player_uuid] = islandShare.player_uuid
+                it[IslandShareTable.player_name] = islandShare.player_name
+                it[IslandShareTable.shared_since] = islandShare.shared_since
             }.map { islandShare.withId(id = it[IslandShareTable.id]) }.first()
         }
     }
@@ -31,6 +38,8 @@ class IslandShareRepositoryImpl(
             this.database.update(IslandShareTable) {
                 it[IslandShareTable.island_id] = islandShare.island_id
                 it[IslandShareTable.player_uuid] = islandShare.player_uuid
+                it[IslandShareTable.player_name] = islandShare.player_name
+                it[IslandShareTable.shared_since] = islandShare.shared_since
             }
                 .where { IslandShareTable.id eq islandShare.id }
                 .execute()

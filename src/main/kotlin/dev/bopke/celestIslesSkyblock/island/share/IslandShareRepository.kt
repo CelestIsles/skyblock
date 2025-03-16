@@ -1,12 +1,13 @@
 package dev.bopke.celestIslesSkyblock.island.share
 
+import org.bukkit.entity.Player
 import java.util.Optional
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
 
 interface IslandShareRepository {
 
-    fun create(islandId: Int, playerUUID: UUID): UnidentifiedIslandShare
+    fun create(islandId: Int, player: Player): UnidentifiedIslandShare
 
     fun save(islandShare: UnidentifiedIslandShare): CompletableFuture<IslandShare>
 

@@ -49,4 +49,15 @@ class IslandMessagesSubConfig : OkaeriConfig() {
         "<color:#22DD22>✔</color> <color:#00FF7F>Player <color:#FFFF55>{player}</color>, has shared island with you!</color>"
     )
 
+    var noShares: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is not shared with anyone!</color>"
+    )
+
+    var shareListHeader: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is shared with:</color>"
+    )
+
+    var shareListEntry: Notice = Notice.chat(
+        "<color:#66CCFF>•</color> <color:#99DDFF>{player}</color> <color:#66BBDD>{date}</color>"
+    )
 }

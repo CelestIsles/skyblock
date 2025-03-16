@@ -1,7 +1,8 @@
-package dev.bopke.celestIslesSkyblock.island.share
+package dev.bopke.celestIslesSkyblock.island.share.commands
 
 import dev.bopke.celestIslesSkyblock.island.Island
 import dev.bopke.celestIslesSkyblock.island.IslandRepository
+import dev.bopke.celestIslesSkyblock.island.share.IslandShareRepository
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.rollczi.litecommands.annotations.argument.Arg
 import dev.rollczi.litecommands.annotations.command.Command
@@ -72,7 +73,7 @@ class IslandShareCommand(
     }
 
     private fun shareIslandWithPlayer(islandId: Int, player: Player, playerToShare: Player): CompletableFuture<Void> {
-        val islandShare = this.islandShareRepository.create(islandId, playerToShare.uniqueId)
+        val islandShare = this.islandShareRepository.create(islandId, playerToShare)
         return this.islandShareRepository.save(islandShare).thenAccept { _ ->
             this.sendShareSuccessNotices(player, playerToShare)
         }

@@ -35,6 +35,18 @@ import dev.bopke.celestIslesSkyblock.island.IslandDefinition
             properties = [
                 Property(operation = PropertyDefinitionOperation.REMOVE, name = "permission")
             ]
+        ),
+        DefinitionVersion(
+            version = "v1.1.1",
+            properties = [
+                Property(operation = PropertyDefinitionOperation.ADD, name = "player_name", type = DataType.TEXT)
+            ]
+        ),
+        DefinitionVersion(
+            version = "v1.1.2",
+            properties = [
+                Property(operation = PropertyDefinitionOperation.ADD, name = "shared_since", type = DataType.DATETIME)
+            ]
         )
     ]
 )
