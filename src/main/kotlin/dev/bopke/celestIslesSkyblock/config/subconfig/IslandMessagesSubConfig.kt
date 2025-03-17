@@ -13,6 +13,18 @@ class IslandMessagesSubConfig : OkaeriConfig() {
     //  "<color:#FF2222>❌</color> <color:#FF4444>content <color:#FFAA00>{player}</color>!</color>" error message (colors)
     //  "<color:#2299FF>ℹ</color> <color:#00AAFF>content <color:##FFD700>{player}</color>.</color>" info message (colors)
 
+    var hasToBePlayer: Notice = BukkitNotice.builder()
+        .chat("<color:#FF2222>❌</color> <color:#FF4444>You have to be player to use this command!</color>")
+        .build()
+
+    var dontHaveIsland: Notice = BukkitNotice.builder()
+        .chat("<color:#FF2222>❌</color> <color:#FF4444>You don't have island!</color>")
+        .build()
+
+    var youNeedToHaveIsland: Notice = BukkitNotice.builder()
+        .chat("<color:#FF2222>❌</color> <color:#FF4444>You need to have island to use this command!</color>")
+        .build()
+
     var alreadyHaveIsland: Notice = BukkitNotice.builder()
         .chat("<color:#FF2222>❌</color> <color:#FF4444>You already have island!</color>")
         .build()
@@ -29,4 +41,51 @@ class IslandMessagesSubConfig : OkaeriConfig() {
         "<color:#22DD22>✔</color> <color:#00FF7F>Successfully changed island name to <color:#FFFF55>{name}</color>!</color>"
     )
 
+    var cannotShareWithYourself: Notice = Notice.chat(
+        "<color:#FF2222>❌</color> <color:#FF4444>You cannot share island with yourself!</color>"
+    )
+
+    var islandIsAlreadySharedWithPlayer: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is already shared with player <color:#FFD700>{player}</color>!</color>"
+    )
+
+    var shareIsland: Notice = Notice.chat(
+        "<color:#22DD22>✔</color> <color:#00FF7F>Successfully shared island with <color:#FFFF55>{player}</color>!</color>"
+    )
+
+    var playerSharedIslandWithYou: Notice = Notice.chat(
+        "<color:#22DD22>✔</color> <color:#00FF7F>Player <color:#FFFF55>{player}</color>, has shared island with you!</color>"
+    )
+
+    var noShares: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is not shared with anyone!</color>"
+    )
+
+    var shareListHeader: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is shared with:</color>"
+    )
+
+    var shareListEntry: Notice = Notice.chat(
+        "<color:#66CCFF>•</color> <color:#99DDFF>{player}</color> <color:#66BBDD>{date}</color>"
+    )
+
+    var islandIsNotSharedWithPlayer: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Island is not shared with player <color:#FFD700>{player}</color>!</color>"
+    )
+
+    var cannotUnShareWithYourself: Notice = Notice.chat(
+        "<color:#FF2222>❌</color> <color:#FF4444>You cannot unshare island from yourself!</color>"
+    )
+
+    var unShareIsland: Notice = Notice.chat(
+        "<color:#22DD22>✔</color> <color:#00FF7F>Successfully unshared island with <color:#FFFF55>{player}</color>!</color>"
+    )
+
+    var playerUnSharedIslandWithYou: Notice = Notice.chat(
+        "<color:#2299FF>ℹ</color> <color:#00AAFF>Player <color:#FFD700>{player}</color>, has unshared island with you!</color>"
+    )
+
+    var islandSharePlayerNotFound: Notice = Notice.chat(
+        "<color:#FF2222>❌</color> <color:#FF4444>Island is not shared with that player!</color>"
+    )
 }

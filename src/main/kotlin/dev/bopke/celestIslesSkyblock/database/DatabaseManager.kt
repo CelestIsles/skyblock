@@ -7,6 +7,7 @@ import com.dzikoysk.sqiffy.migrator.SqiffyMigrator
 import com.dzikoysk.sqiffy.shared.createHikariDataSource
 import dev.bopke.celestIslesSkyblock.config.PluginConfig
 import dev.bopke.celestIslesSkyblock.island.IslandDefinition
+import dev.bopke.celestIslesSkyblock.island.share.IslandShareDefinition
 import org.slf4j.LoggerFactory
 
 class DatabaseManager(
@@ -26,7 +27,8 @@ class DatabaseManager(
             logger = Slf4JSqiffyLogger(LoggerFactory.getLogger(SqiffyDatabase::class.java))
         )
         val changeLog = database.generateChangeLog(listOf(
-            IslandDefinition::class
+            IslandDefinition::class,
+            IslandShareDefinition::class
         ))
 
         database.runMigrations(SqiffyMigrator(changeLog))
