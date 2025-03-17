@@ -1,6 +1,7 @@
 package dev.bopke.celestIslesSkyblock
 
 import com.eternalcode.multification.notice.Notice
+import dev.bopke.celestIslesSkyblock.command.handler.InvalidUsageHandler
 import dev.bopke.celestIslesSkyblock.island.commands.IslandCreateCommand
 import dev.bopke.celestIslesSkyblock.config.ConfigManager
 import dev.bopke.celestIslesSkyblock.config.MessageConfig
@@ -13,6 +14,9 @@ import dev.bopke.celestIslesSkyblock.island.share.commands.IslandShareCommand
 import dev.bopke.celestIslesSkyblock.island.share.IslandShareRepository
 import dev.bopke.celestIslesSkyblock.island.share.IslandShareRepositoryImpl
 import dev.bopke.celestIslesSkyblock.island.share.commands.IslandShareListCommand
+import dev.bopke.celestIslesSkyblock.island.share.commands.IslandUnShareCommand
+import dev.bopke.celestIslesSkyblock.island.share.commands.argument.IslandShareArgument
+import dev.bopke.celestIslesSkyblock.island.share.commands.argument.IslandShareArgumentResolver
 import dev.bopke.celestIslesSkyblock.notice.NoticeHandler
 import dev.bopke.celestIslesSkyblock.notice.NoticeService
 import dev.bopke.celestIslesSkyblock.notice.adventure.LegacyColorProcessor
@@ -21,6 +25,7 @@ import dev.bopke.celestIslesSkyblock.worlds.generator.BiomeProvider
 import dev.bopke.celestIslesSkyblock.worlds.generator.ChunkGenerator
 import dev.rollczi.litecommands.LiteCommands
 import dev.rollczi.litecommands.bukkit.LiteBukkitFactory
+import dev.rollczi.litecommands.bukkit.LiteBukkitMessages
 import eu.okaeri.tasker.bukkit.BukkitTasker
 import net.kyori.adventure.platform.AudienceProvider
 import net.kyori.adventure.platform.bukkit.BukkitAudiences
@@ -74,10 +79,19 @@ class CelestIslesSkyblockPlugin : JavaPlugin() {
         this.worldFactory = WorldFactory(this.pluginConfig)
 
         this.liteCommands = LiteBukkitFactory.builder("skyblock", this)
+            .argument(IslandShareArgument::class.java, IslandShareArgumentResolver(
+                islandRepository,
+                messageConfig.islandMessagesSubConfig,
+                islandShareRepository
+            ))
+            .message(LiteBukkitMessages.PLAYER_NOT_FOUND, this.messageConfig.wrongUsageSubConfig.cantFindPlayer)
+            .message(LiteBukkitMessages.PLAYER_ONLY, this.messageConfig.wrongUsageSubConfig.onlyForPlayer)
+            .invalidUsage(InvalidUsageHandler(this.noticeService))
             .commands(
                 IslandCreateCommand(this.worldFactory, this.noticeService, this.pluginConfig, this.islandRepository),
                 IslandSetNameCommand(this.noticeService, this.islandRepository),
                 IslandShareCommand(this.noticeService, this.islandRepository, this.islandShareRepository),
+                IslandUnShareCommand(this.noticeService, this.islandRepository, this.islandShareRepository),
                 IslandShareListCommand(this.noticeService, this.islandRepository, this.islandShareRepository)
             )
             .result(Notice::class.java, NoticeHandler(this.noticeService))

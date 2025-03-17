@@ -4,7 +4,6 @@ import com.dzikoysk.sqiffy.SqiffyDatabase
 import com.dzikoysk.sqiffy.dsl.and
 import com.dzikoysk.sqiffy.dsl.eq
 import org.bukkit.entity.Player
-import java.time.Instant
 import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.CompletableFuture
@@ -46,6 +45,12 @@ class IslandShareRepositoryImpl(
         }
     }
 
+    override fun delete(islandShare: IslandShare): CompletableFuture<Int> {
+        return CompletableFuture.supplyAsync {
+            this.database.delete(IslandShareTable).where { IslandShareTable.id eq islandShare.id }.execute()
+        }
+    }
+
     override fun get(islandId: Int, playerUUID: UUID): CompletableFuture<Optional<IslandShare>> {
         return CompletableFuture.supplyAsync {
             Optional.ofNullable(
@@ -54,6 +59,22 @@ class IslandShareRepositoryImpl(
                         and(
                             IslandShareTable.island_id eq islandId,
                             IslandShareTable.player_uuid eq playerUUID
+                        )
+                    }
+                    .map { it.toIslandShare() }
+                    .firstOrNull()
+            )
+        }
+    }
+
+    override fun get(islandId: Int, playerName: String): CompletableFuture<Optional<IslandShare>> {
+        return CompletableFuture.supplyAsync {
+            Optional.ofNullable(
+                this.database.select(IslandShareTable)
+                    .where {
+                        and(
+                            IslandShareTable.island_id eq islandId,
+                            IslandShareTable.player_name eq playerName
                         )
                     }
                     .map { it.toIslandShare() }

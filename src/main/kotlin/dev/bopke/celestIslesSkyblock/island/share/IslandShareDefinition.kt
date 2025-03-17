@@ -3,7 +3,6 @@ package dev.bopke.celestIslesSkyblock.island.share
 import com.dzikoysk.sqiffy.definition.*
 import dev.bopke.celestIslesSkyblock.island.IslandDefinition
 
-
 @Definition(
     [
         DefinitionVersion(
@@ -13,7 +12,8 @@ import dev.bopke.celestIslesSkyblock.island.IslandDefinition
                 Property(name = "id", type = DataType.SERIAL),
                 Property(name = "island_id", type = DataType.INT),
                 Property(name = "player_uuid", type = DataType.UUID_TYPE),
-                Property(name = "permission", type = DataType.TEXT)
+                Property(name = "player_name", type = DataType.TEXT),
+                Property(name = "shared_since", type = DataType.DATETIME)
             ],
             constraints = [
                 Constraint(type = ConstraintType.PRIMARY_KEY, name = "pk_id", on = ["id"]),
@@ -28,24 +28,6 @@ import dev.bopke.celestIslesSkyblock.island.IslandDefinition
             indices = [
                 Index(type = IndexType.INDEX, name = "index_island_id", columns = ["island_id"]),
                 Index(type = IndexType.INDEX, name = "index_player_uuid", columns = ["player_uuid"])
-            ]
-        ),
-        DefinitionVersion(
-            version = "v1.1.0",
-            properties = [
-                Property(operation = PropertyDefinitionOperation.REMOVE, name = "permission")
-            ]
-        ),
-        DefinitionVersion(
-            version = "v1.1.1",
-            properties = [
-                Property(operation = PropertyDefinitionOperation.ADD, name = "player_name", type = DataType.TEXT)
-            ]
-        ),
-        DefinitionVersion(
-            version = "v1.1.2",
-            properties = [
-                Property(operation = PropertyDefinitionOperation.ADD, name = "shared_since", type = DataType.DATETIME)
             ]
         )
     ]
