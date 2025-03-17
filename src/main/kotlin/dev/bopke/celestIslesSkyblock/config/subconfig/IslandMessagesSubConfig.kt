@@ -74,7 +74,7 @@ class IslandMessagesSubConfig : OkaeriConfig() {
     )
 
     var cannotUnShareWithYourself: Notice = Notice.chat(
-        "<color:#FF2222>❌</color> <color:#FF4444>You cannot unshare island with yourself!</color>"
+        "<color:#FF2222>❌</color> <color:#FF4444>You cannot unshare island from yourself!</color>"
     )
 
     var unShareIsland: Notice = Notice.chat(
